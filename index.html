@@ -1,0 +1,193 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Asteroids - sebastienguillon.net</title>
+    <link rel="stylesheet" href="css/asteroids.css" media="screen">
+
+    <script type="text/javascript" src="js/moz-optimized-resize.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/polyfills.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/utils.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/ajax.js" charset="utf-8"></script>
+
+    <script type="text/javascript" src="js/explosion.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/asteroid.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/bonus.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/ship.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/star.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/sound.js" charset="utf-8"></script>
+    <script type="text/javascript" src="js/game.js" charset="utf-8"></script>
+
+    <script type="text/javascript" src="js/asteroids.js" charset="utf-8"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+
+  <body>
+    <canvas id="bg-canvas" width="0" height="0"></canvas>
+    <canvas id="canvas"></canvas>
+    <canvas id="ui-canvas"></canvas>
+
+
+    <div id="loading-screen">
+      <h1>sebastienguillon.net</h1>
+      <div>
+        chargement...
+      </div>
+    </div><!-- #loading-screen -->
+
+
+    <div id="start-pause-screen">
+
+      <div id="start-screen">
+        <h1>Sébastien Guillon</h1>
+        <h2>Développeur JavaScript Full Stack</h2>
+        <p class="intro">Découvrez mon CV en jouant au classique <em>Asteroids</em></p>
+        <p>
+          Vous pouvez aussi <a href="cv.html">consulter mon CV</a> directement.
+        </p>
+
+        <p class="press-space-start blink">
+          Appuyez sur Espace pour commencer
+        </p><!-- .click-to-start -->
+      </div><!-- #start-screen -->
+
+
+      <div id="pause-screen">
+        <div class="pause blink">Pause</div>
+      </div><!-- #pause-screen -->
+
+
+      <div id="menu-screen" class="window">
+
+        <nav id="menu-select">
+          <ul>
+            <li><button type="button" data-menu="instructions-menu" class="current">instructions</button></li><!--
+            --><li><button type="button" data-menu="options-menu">options</button></li><!--
+            --><li><button type="button" data-menu="scores-menu">scores</button></li>
+          </ul>
+        </nav><!-- #pause-screen -->
+
+        <div id="instructions-menu" class="menu">
+          <table>
+            <tbody>
+              <tr>
+                <th scope="row"><kbd class="controls">↑</kbd></th>
+                <td>Propulsion du vaisseau</td>
+              </tr>
+              <tr>
+                <th scope="row"><kbd class="controls">←</kbd></th>
+                <td>Rotation anti-horaire du vaisseau</td>
+              </tr>
+              <tr>
+                <th scope="row"><kbd class="controls">→</kbd></th>
+                <td>Rotation horaire du vaisseau</td>
+              </tr>
+              <tr>
+                <th scope="row"><kbd class="controls">Espace</kbd></th>
+                <td>Tirer un laser</td>
+              </tr>
+              <tr>
+                <th scope="row"><kbd>Esc</kbd></th>
+                <td>Pause</td>
+              </tr>
+              <tr>
+                <th scope="row"><kbd class="important">F11</kbd></th>
+                <td>Plein écran</td>
+              </tr>
+            </tbody>
+          </table>
+        </div><!-- #instructions-menu -->
+
+        <div id="options-menu" class="menu">
+<!--          <div>
+            <label for="optionColorful">Couleurs</label>
+            <input type="checkbox" id="optionColorful" name="optionColorful" value="1" checked="checked">
+          </div>-->
+
+          <ul>
+            <li>
+              <label for="optionDebug">
+              <input type="checkbox" id="optionDebug" name="optionDebug" value="1">
+              Afficher les informations de débogage</label>
+            </li>
+
+            <li>
+              <label for="optionMusic">
+              <input type="checkbox" id="optionMusic" name="optionMusic" value="1" checked="checked">
+              Activer la musique</label>
+            </li>
+
+            <li>
+              <label for="optionSoundEffects">
+              <input type="checkbox" id="optionSoundEffects" name="optionSoundEffects" value="1" checked="checked">
+              Activer les effets sonores</label>
+            </li>
+          </ul>
+        </div><!-- #options-menu -->
+
+
+        <div id="scores-menu" class="menu">
+          {{ highscores }}
+        </div><!-- #instructions-menu -->
+
+      </div><!-- #menu-screen -->
+
+    </div><!-- #start-pause-screen -->
+
+
+
+    <div id="fps"></div>
+
+    <div id="game-info">
+      <div class="score"></div>
+      <div class="progress-bar">
+        <div class="progress">0&#160;%</div>
+      </div>
+    </div>
+
+
+    <div id="level-screen">
+      <div class="text"></div>
+    </div><!-- #pause-screen -->
+
+
+    <div id="game-over" class="overlay">
+      <p class="game-over">
+      Game Over
+      </p>
+      <p class="press-space-continue blink">Appuyez&nbsp;sur&nbsp;Espace&nbsp;pour&nbsp;continuer</p>
+    </div>
+
+
+    <div id="win" class="overlay">
+      <div class="content">
+      <h1>Félicitations&nbsp;!</h1>
+      <p>
+        <strong>Vous avez gagné découvert mes principales compétences. <br>
+        Vous pouvez <a href="cv.html">accès à mon CV complet</a>.</strong>
+      </p>
+      <p>
+        Vous pouvez aussi rejouer et tenter de battre votre score.
+      </p>
+      <p>
+        <button type="button" id="play-again" name="play-again">Rejouer</button>
+      </p>
+      </div>
+    </div>
+
+    <div id="hof-input" class="overlay">
+      <form action="/asteroidsSaveScore.html" method="get" class="window window2" id="hof-form">
+        <p>
+          <strong>Vous entrez dans le classement<br>des 10 meilleurs scores&nbsp;!</strong>
+        </p>
+        <p>
+          <label for="hs-name">Saisissez votre nom :</label>
+          <input type="text" id="hs-name" name="name" value="">
+          <input type="hidden" id="hs-score" name="score" value="">
+        </p>
+      </form>
+    </div>
+
+
+  </body>
+</html>

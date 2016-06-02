@@ -1,0 +1,16 @@
+html, body {
+  padding: 0;
+  margin: 0;
+  background-color: #efefef;
+
+}
+
+body {
+  font-family: arial, sans-serif;;
+  color: #333;
+}
+
+a, a:active, a:visited, a:link, a:hover, a:focus {
+  outline: 0;
+  color: #09f;
+}
