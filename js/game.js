@@ -16,6 +16,10 @@ var Game = function() {
   this.host = window.location.host;
   //var selectedHost = (host == 'sebastienguillon.net') ? 'sebastienguillon.net' : '192.168.1.20'; // Needed for local use
 
+  this.sound;
+  this.checkAudioInterval;
+  this.audioAvailable;
+
   this.debugMode = false; // true | false
   this.musicOn = true; // true | false
   this.soundEffectsOn = true; // true | false
@@ -43,6 +47,7 @@ var Game = function() {
   this.rafTimer, // timer to throttle some actions in requestAnimationFrame
   this.level, // the level index (starting at 0)
   this.stars;
+
 
   // allows for easy reset of level bonuses between games
   this.getLevels = function() {
@@ -87,51 +92,45 @@ var Game = function() {
   this.progressIncrements = 100 / this.nbBonuses; // the amount in percents each bonus is worth
 
 
-  this.setUpMenus = function() {
-    var menuButtons = document.querySelectorAll('#menu-select button');
-    for(var i = 0; i < menuButtons.length; i++) {
-      menuButtons[i].addEventListener('click', function(event) {
-        //switchMenu(this.dataset.menu); // the right way
-        self.switchMenu(this.getAttribute('data-menu')); // the lame IE9-compatible way
-      });
-    }
-  }; // setUpMenus
-  this.setUpMenus();
-
-
-  this.switchMenu = function(menu) {
-    var menuButtons = document.querySelectorAll('#menu-select button');
-    for(var i = 0; i < menuButtons.length; i++) {
-      if(menuButtons[i].getAttribute('data-menu') == menu) {
-        menuButtons[i].className = 'current';
-      }
-      else {
-        menuButtons[i].className = '';
-      }
-    }
-
-    var menus = document.querySelectorAll('#menu-screen .menu');
-    for(var i = 0; i < menus.length; i++) {
-      if(menus[i].id == menu) {
-        menus[i].style.display = 'block';
-      }
-      else {
-        menus[i].style.display = 'none';
-      }
-    }
-  }; // switchMenu
+  // Check mp3 audio support
+  // http://diveintohtml5.info/everything.html
+  this.checkAudioSupport = function() {
+    var a = document.createElement('audio');
+    return !!(a.canPlayType && a.canPlayType('audio/mpeg;').replace(/no/, ''));
+  }
 
 
   // Initial page setup and preloading of resources
+  // A beginning is the time for taking the most delicate care that the balances are correct.
   this.init = function() {
     this.setCanvasFullSize();
 
-    // Preload sounds here...
-
-    // This is a "fake" preload but we don't want to block the game if the resources have not finished loading
-    // Note: Maybe enforce stricter preloading rules when all is set
-    setTimeout(this.pageReady, 1200);
+    if(this.checkAudioSupport()) {
+      this.audioAvailable = true;
+      this.sound = new Sound();
+      this.checkAudioInterval = window.setInterval(this.checkAudioReady, 500);
+    }
+    else {
+      this.audioAvailable = false;
+      this.musicOn = false; // true | false
+      this.soundEffectsOn = false; // true | false
+      this.gameReady();
+    }
+    //setTimeout(this.gameReady, 1200);
   }; // init
+
+
+  this.checkAudioReady = function() {
+    if (self.sound.gameMusic.readyState === 4 &&
+        self.sound.laser.pool[0].readyState === 4 &&
+        self.sound.bonusPickup.pool[0].readyState === 4 &&
+        self.sound.shipExplosion.pool[0].readyState === 4 &&
+        self.sound.asteroidExplosion.pool[0].readyState === 4) {
+      window.clearInterval(self.checkAudioInterval);
+      self.gameReady();
+    }
+  }
+
 
   // self explanatory, some css rules do the rest
   this.setCanvasFullSize = function() {
@@ -159,10 +158,10 @@ var Game = function() {
 
 
   // This is just an intermediate stage that may be removed at some point
-  this.pageReady = function() {
+  this.gameReady = function() {
     document.getElementById('loading-screen').style.display = 'none';
     self.showStartScreen(); // SELF
-  }; // pageReady
+  }; // gameReady
 
 
   // Reset all the variables for a new game
@@ -882,14 +881,4 @@ var Game = function() {
       document.getElementById('start-pause-screen').style.display = 'none';
     }
   }; // setPaused
-
-  this.checkAudioInterval;
-  this.sound = new Sound(this.host);
-
-  this.checkAudioReady = function() {
-    //if (game.gameOverAudio.readyState === 4 && game.backgroundAudio.readyState === 4) {
-      window.clearInterval(this.checkAudioInterval);
-      //game.start();
-    //}
-  }
 }; // Game

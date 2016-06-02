@@ -2,8 +2,6 @@
 
 var DOMLoaded = function() {
 
-
-
   var renderLoop = function() {
     if(!game.rafTimer) {
       game.rafTimer = new Date().getTime();
@@ -227,6 +225,39 @@ var DOMLoaded = function() {
   }); // keyup
 
 
+  var setUpMenus = function() {
+    var menuButtons = document.querySelectorAll('#menu-select button');
+    for(var i = 0; i < menuButtons.length; i++) {
+      menuButtons[i].addEventListener('click', function(event) {
+        //switchMenu(this.dataset.menu); // the right way
+        switchMenu(this.getAttribute('data-menu')); // the lame IE9-compatible way
+      });
+    }
+  }; // setUpMenus
+
+
+  var switchMenu = function(menu) {
+    var menuButtons = document.querySelectorAll('#menu-select button');
+    for(var i = 0; i < menuButtons.length; i++) {
+      if(menuButtons[i].getAttribute('data-menu') == menu) {
+        menuButtons[i].className = 'current';
+      }
+      else {
+        menuButtons[i].className = '';
+      }
+    }
+
+    var menus = document.querySelectorAll('#menu-screen .menu');
+    for(var i = 0; i < menus.length; i++) {
+      if(menus[i].id == menu) {
+        menus[i].style.display = 'block';
+      }
+      else {
+        menus[i].style.display = 'none';
+      }
+    }
+  }; // switchMenu
+
 
   /* Start: options menu */
   /*document.getElementById('optionColorful').addEventListener('change', function() {
@@ -241,13 +272,16 @@ var DOMLoaded = function() {
     fpsDisplayElm.style.display = (game.debugMode) ? 'block': 'none';
   });
 
-
   document.getElementById('optionMusic').addEventListener('change', function(event) {
-    game.musicOn = (this.checked) ? true : false;
+    if(game.audioAvailable) {
+      game.musicOn = (this.checked) ? true : false;
+    }
   });
 
   document.getElementById('optionSoundEffects').addEventListener('change', function(event) {
-    game.soundEffectsOn = (this.checked) ? true : false;
+    if(game.audioAvailable) {
+      game.soundEffectsOn = (this.checked) ? true : false;
+    }
   });
   /* End: options menu */
 
@@ -326,6 +360,7 @@ var DOMLoaded = function() {
   }; // envSetup
 
 
+  setUpMenus();
   envSetup();
   var game = new Game();
   game.init();
