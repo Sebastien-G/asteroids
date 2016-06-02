@@ -267,14 +267,14 @@ var DOMLoaded = function() {
     var name = document.getElementById('hs-name').value;
     document.getElementById('hof-input').style.display = 'none';
 
+    if(game.stage == 'gameOver') {
+      game.resetGame();
+      game.switchMenu('scores-menu');
+      game.showStartScreen();
+    }
+
     ajaxGet('/asteroidsSaveScore.html?name=' + encodeURIComponent(name) + '&score=' + score, true, function() {
       game.reloadHighScores();
-
-      if(game.stage == 'gameOver') {
-        game.resetGame();
-        game.switchMenu('scores-menu');
-        game.showStartScreen();
-      }
     });
   }; // saveHighScore
   document.getElementById('hof-form').addEventListener('submit', saveHighScore);
