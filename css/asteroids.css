@@ -7,6 +7,7 @@ body {
   font-family: arial, sans-serif;;
   background-color: #000412;
   color: #fff;
+  overflow: hidden; /* Fixes a lame IE problem */
 }
 
 
@@ -463,8 +464,18 @@ kbd.important {
   -webkit-text-stroke-width: 2px;
   -webkit-text-stroke-color: rgba(0, 255, 153, 1);
   text-shadow: 0 0 5vmin rgba(0, 255, 153, .3);
+
+  /*color: rgba(0, 255, 153, 0);*/
+
   line-height: 1;
 }
+
+#game-over .text-border {
+  color: rgba(0, 0, 0, 0);
+  text-shadow: 3px 3px 0 #0f9, -1px -1px 0 #0f9, 1px -1px 0 #0f9, -1px  1px 0 #0f9, 1px  1px 0 #0f9;
+}
+
+
 
 #game-over .press-space-continue {
   overflow: visible;

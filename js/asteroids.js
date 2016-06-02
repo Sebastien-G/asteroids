@@ -2,6 +2,52 @@
 
 var DOMLoaded = function() {
 
+
+  // CSS support detection
+  var cssFeatureSupport = (function() {
+    var p, property;
+  	var cssProperties = 'textShadow,textStroke,boxShadow,borderRadius,borderImage,opacity'.split(',');
+		var cssPrefixes = 'Webkit,Moz,O,ms,Khtml'.split(',');
+		var testElm = document.createElement('css-detect');
+		var test = [];
+
+  	var testPrefixes = function(prop) {
+  		var capitalizedPropertyName = prop.charAt(0).toUpperCase() + prop.substr(1);
+  		var propertyVariants = (prop + ' ' + cssPrefixes.join(capitalizedPropertyName + ' ') + capitalizedPropertyName).split(' ');
+
+  		for (var n = 0; n < propertyVariants.length; n++) {
+  			if (testElm.style[propertyVariants[n]] === '') {
+          return true;
+        };
+  		}
+
+      return false;
+  	}; // testPrefixes
+
+  	for(p in cssProperties) {
+  		property = cssProperties[p];
+  		test[property] = testPrefixes(property);
+  	}
+
+  	return test;
+  }());
+
+console.log(cssFeatureSupport);
+if(!cssFeatureSupport['textStroke']) {
+  document.querySelector('#game-over .game-over').className += ' text-border';
+}
+
+/*
+  var elm = document.getElementById('css-detect');
+  for (var t in cssFeatureSupport) {
+  	if (cssFeatureSupport[t]) {
+      //html.className += ' ' + t.toLowerCase();
+      elm.innerHTML += t + '<br>';
+    }
+  }
+*/
+
+
   var renderLoop = function() {
     if(!game.rafTimer) {
       game.rafTimer = new Date().getTime();
@@ -284,6 +330,7 @@ var DOMLoaded = function() {
     game.setCanvasFullSize(); //
   } // windowResizeHandler
   window.addEventListener('optimizedResize', windowResizeHandler); // Uses a throttling function from Mozilla
+  //window.addEventListener('resize', windowResizeHandler); // Use dumb version for now
 
   var game = new Game();
   game.init();

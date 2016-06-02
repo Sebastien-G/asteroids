@@ -16,7 +16,7 @@ var Game = function() {
   this.host = window.location.host;
   //var selectedHost = (host == 'sebastienguillon.net') ? 'sebastienguillon.net' : '192.168.1.20'; // Needed for local use
 
-  this.debugMode = true; // true | false
+  this.debugMode = false; // true | false
   this.musicOn = true; // true | false
   this.soundEffectsOn = true; // true | false
 
