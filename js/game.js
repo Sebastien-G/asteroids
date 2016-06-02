@@ -139,6 +139,9 @@ var Game = function() {
     this.height = this.uiCanvas.height = this.canvas.height = this.bgCanvas.height = window.innerHeight;
 
     window.requestAnimationFrame(this.drawBg);
+    if(self.stage == 'gameOn') {
+      this.updateLivesShips();
+    }
   }; // setCanvasFullSize
 
 
@@ -178,7 +181,6 @@ var Game = function() {
     this.currentProgress = 0;
     document.getElementById('game-over').style.display = 'none';
     document.getElementById('game-info').style.display = 'none';
-    this.updateLivesShips(0);
 
     document.querySelector('#game-info .progress').innerHTML = '0&#160;%';
     document.querySelector('#game-info .progress').style.width = '0%';
@@ -192,7 +194,7 @@ var Game = function() {
 
     document.getElementById('start-pause-screen').style.display = 'none';
     document.getElementById('game-info').style.display = 'block';
-    this.updateLivesShips(this.nbLives);
+    this.updateLivesShips();
 
     document.getElementById('win').style.display = 'none';
 
@@ -517,7 +519,7 @@ var Game = function() {
                   this.shipExplosion = new ShipExplosion(shipPoint.x, shipPoint.y, photonTorpedo.getHeading(), this.ship.getSpeed(), this.colorful);
                   this.ship.alive = false;
                   this.nbLives--;
-                  this.updateLivesShips(this.nbLives);
+                  this.updateLivesShips();
                   if(this.nbLives > 0) {
                     this.ship.invulnerable = true;
                     setTimeout(this.regenerate, 1500);
@@ -699,7 +701,7 @@ var Game = function() {
                   this.shipExplosion = new ShipExplosion(crashPoint.x, crashPoint.y, this.ship.getHeading(), this.ship.getSpeed(), this.colorful);
                   this.ship.alive = false;
                   this.nbLives--;
-                  this.updateLivesShips(this.nbLives);
+                  this.updateLivesShips();
                   if(this.nbLives > 0) {
                     this.ship.invulnerable = true;
                     setTimeout(this.regenerate, 1500);
@@ -723,12 +725,12 @@ var Game = function() {
   // Displays the dummy ships representing the number of lives left
   // (top left of the screen)
   // Importantly this is drawn on a separate "UI" canvas
-  this.updateLivesShips = function(nbShips) {
+  this.updateLivesShips = function() {
     window.requestAnimationFrame(function() {
       self.uiCtx.clearRect(0, 0, self.width, self.height);
 
       var left = 40;
-      for (var i = 0; i < nbShips; i++) {
+      for (var i = 0; i < self.nbLives; i++) {
         self.livesShip = new Ship({
           x: left,
           y: 40,

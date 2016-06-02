@@ -169,9 +169,6 @@ nav#menu-select {
 }
 
 #menu-screen {
-
-
-
   color: rgba(255, 255, 255, .85);
   font-size:2vmin;
   position: absolute;
@@ -183,7 +180,6 @@ nav#menu-select {
   top: 55%;
   left: 50%;
   transform: translate(-50%, -55%);
-
 }
 
 #pause-screen {
@@ -199,9 +195,6 @@ nav#menu-select {
   transition: background-color 1s;
   text-decoration: none;
 }
-/*#pause-screen:focus {
-  background-color: rgba(0, 0, 0, .5);
-}*/
 
 #pause-screen div.pause {
   text-align: center;
@@ -234,7 +227,7 @@ nav#menu-select {
   text-align: right;
 }
 #instructions-menu table th, #instructions-menu table td {
-  padding: 15px 10px;
+  padding: 1.25vmin 10px;
 }
 
 #instructions-menu tr.separator {
@@ -292,9 +285,9 @@ nav#menu-select {
   text-align: center;
 
   position: absolute;
-  top: 80%;
+  top: 85%;
   left: 50%;
-  transform: translate(-50%, -80%);
+  transform: translate(-50%, -85%);
 }
 
 
@@ -471,8 +464,8 @@ kbd.important {
 }
 
 #game-over .text-border {
-  color: rgba(0, 0, 0, 0);
-  text-shadow: 3px 3px 0 #0f9, -1px -1px 0 #0f9, 1px -1px 0 #0f9, -1px  1px 0 #0f9, 1px  1px 0 #0f9;
+  color: #000309;
+  text-shadow: 1px 1px 0 #0f9, -1px -1px 0 #0f9, 1px -1px 0 #0f9, -1px  1px 0 #0f9, 1px  1px 0 #0f9, 0 0 10px #0f9;
 }
 
 
