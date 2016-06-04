@@ -301,6 +301,12 @@ var DOMLoaded = function() {
     document.getElementById('optionDebug').checked = game.debugMode;
     document.getElementById('optionMusic').checked = game.musicOn;
     document.getElementById('optionSoundEffects').checked = game.soundEffectsOn;
+
+    if(!game.audioAvailable) {
+      document.getElementById('optionMusic').parentNode.remove();
+      document.getElementById('optionSoundEffects').parentNode.remove();
+    }
+
   }; // setOptionsMenu
 
 
