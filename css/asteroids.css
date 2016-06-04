@@ -142,7 +142,7 @@ div {
 #start-screen .press-space-start {
   font-size:4vmin;
   font-weight: bold;
-  color: rgba(0, 255, 153, .66);
+  color: rgba(255, 255, 255, .66);
   text-align: center;
 
   position: absolute;
