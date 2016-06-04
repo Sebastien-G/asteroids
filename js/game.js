@@ -47,6 +47,9 @@ var Game = function() {
   this.rafTimer, // timer to throttle some actions in requestAnimationFrame
   this.level, // the level index (starting at 0)
   this.stars;
+  this.nbBonuses = 0;
+  this.levels;
+  this.progressIncrements;
 
 
   // allows for easy reset of level bonuses between games
@@ -78,18 +81,6 @@ var Game = function() {
       }
     }];
   };
-  this.levels = this.getLevels();
-
-
-  this.nbBonuses = 0;
-  for(var i = 0; i < this.levels.length; i++) {
-    for(var prop in this.levels[i].bonuses) {
-      if(this.levels[i].bonuses.hasOwnProperty(prop)) {
-        this.nbBonuses += this.levels[i].bonuses[prop].length;
-      }
-    }
-  }
-  this.progressIncrements = 100 / this.nbBonuses; // the amount in percents each bonus is worth
 
 
   // Check mp3 audio support
@@ -97,13 +88,24 @@ var Game = function() {
   this.checkAudioSupport = function() {
     var a = document.createElement('audio');
     return !!(a.canPlayType && a.canPlayType('audio/mpeg;').replace(/no/, ''));
-  }
+  }; // checkAudioSupport
 
 
   // Initial page setup and preloading of resources
   // A beginning is the time for taking the most delicate care that the balances are correct.
   this.init = function() {
     this.setCanvasFullSize();
+
+    this.levels = this.getLevels();
+
+    for(var i = 0; i < this.levels.length; i++) {
+      for(var prop in this.levels[i].bonuses) {
+        if(this.levels[i].bonuses.hasOwnProperty(prop)) {
+          this.nbBonuses += this.levels[i].bonuses[prop].length;
+        }
+      }
+    }
+    this.progressIncrements = 100 / this.nbBonuses; // the amount in percents each bonus is worth
 
     if(this.checkAudioSupport()) {
       this.audioAvailable = true;
@@ -129,7 +131,7 @@ var Game = function() {
       window.clearInterval(self.checkAudioInterval);
       self.gameReady();
     }
-  }
+  }; // checkAudioReady
 
 
   // self explanatory, some css rules do the rest

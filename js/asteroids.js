@@ -350,7 +350,7 @@ var DOMLoaded = function() {
 
     if(game.stage == 'gameOver') {
       game.resetGame();
-      game.switchMenu('scores-menu');
+      switchMenu('scores-menu');
       game.showStartScreen();
     }
 

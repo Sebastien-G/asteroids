@@ -119,18 +119,39 @@ div {
 #start-screen h2 {
   text-align: center;
   margin-top: 0;
+  margin-bottom: 0;
   color: rgba(255, 153, 0, .66);
   font-size: 4vmin;
 }
 #start-screen  p {
   text-align: center;
+  margin: 0;
   color: rgba(255, 255, 255, .66);
 }
 #start-screen p.intro {
   text-align: center;
   color: rgba(0, 153, 255, .66);
   font-size: 3vmin;
+  margin-bottom: 1vmin;
 }
+
+#start-screen p small {
+  font-size: 1.5vmin;
+}
+
+#start-screen .press-space-start {
+  font-size:4vmin;
+  font-weight: bold;
+  color: rgba(0, 255, 153, .66);
+  text-align: center;
+
+  position: absolute;
+  top: 88%;
+  left: 50%;
+  transform: translate(-50%, -88%);
+}
+
+
 
 nav#menu-select {
   box-sizing: border-box;
@@ -270,14 +291,15 @@ nav#menu-select {
   position: absolute;
   left: 0;
   top: 0;
-  transition: all .06s, border-color .08s;
+  transition: all .5s;
 }
 #options-menu input[type="checkbox"]:checked + label:before {
+  height: 1vmin;
   border-radius: 3px;
   opacity: 1;
   border-top-color: transparent;
   border-left-color: transparent;
-  transform: rotate(45deg);
+  transform: rotate(130deg) scaleY(-1);
 }
 
 
@@ -301,21 +323,6 @@ nav#menu-select {
 }
 #scores-menu td:nth-of-type(2n) {
   text-align: right;
-}
-
-
-
-
-.press-space-start {
-  font-size:3vmin;
-  font-weight: bold;
-  color: rgba(0, 255, 153, .66);
-  text-align: center;
-
-  position: absolute;
-  top: 85%;
-  left: 50%;
-  transform: translate(-50%, -85%);
 }
 
 
