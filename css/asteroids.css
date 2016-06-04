@@ -252,6 +252,34 @@ nav#menu-select {
 #options-menu label:hover {
   color: rgba(0, 255, 153, .66);
 }
+#options-menu input[type="checkbox"] {
+  display: none;
+}
+#options-menu input[type="checkbox"] + label {
+  display: block;
+  position: relative;
+  padding-left: 4vmin;
+  cursor: pointer;
+}
+#options-menu input[type="checkbox"] + label:before {
+  content: '';
+  display: block;
+  width: 1.5vmin;
+  height: 1.5vmin;
+  border: 2px solid #fff;
+  position: absolute;
+  left: 0;
+  top: 0;
+  transition: all .06s, border-color .08s;
+}
+#options-menu input[type="checkbox"]:checked + label:before {
+  border-radius: 3px;
+  opacity: 1;
+  border-top-color: transparent;
+  border-left-color: transparent;
+  transform: rotate(45deg);
+}
+
 
 
 #scores-menu {
