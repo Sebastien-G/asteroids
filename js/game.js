@@ -85,7 +85,9 @@ var Game = function() {
   this.applyColor = function(colorful) {
 
     this.colorful = colorful;
-    this.updateLivesShips();
+    if(self.stage == 'gameOn') {
+      this.updateLivesShips();
+    }
     var monoStylesheet = document.getElementById('mono-stylesheet');
     //var monoStylesheet = document.styleSheets[1];
 

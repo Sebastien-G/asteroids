@@ -13,8 +13,12 @@ body {
 
 a, a:active, a:visited, a:link, a:hover, a:focus {
   outline: 0;
-  color: #09f;
+  color: rgba(0, 153, 255, .66);
 }
+a:hover, a:focus {
+  color: rgba(0, 153, 255, 1);
+}
+
 
 .blink {
   animation: blinky 2s ease-out infinite;
