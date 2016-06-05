@@ -56,7 +56,7 @@ var Game = function() {
   this.getLevels = function() {
     return [{
       nbAsteroids: 4,
-      nbEnemyShips: 1,
+      nbEnemyShips: 0,
       enemyShipSpawnDelay: 10000,
       bonuses: {
         size1: ['HTML5', 'CSS3'],
