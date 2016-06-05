@@ -146,7 +146,7 @@ var DOMLoaded = function() {
       }
     } // !paused && renderStage
 
-    if(!game.paused) {
+    if(!game.paused && game.colorful) {
 
       game.bgCtx.clearRect(0, 0, game.width, game.height);
       for(var i = 0; i < game.stars.length; i++) {
@@ -374,7 +374,9 @@ var DOMLoaded = function() {
       game.showStartScreen();
     }
 
-    ajaxGet('/asteroidsSaveScore.html?name=' + encodeURIComponent(name) + '&score=' + score, true, function() {
+    var saveUrl = '/asteroidsSaveScore.html?name=' + encodeURIComponent(name) + '&score=' + score;
+    ajaxGet(saveUrl, true, function() {
+      document.getElementById('hof-form').addEventListener('submit', saveHighScore);
       game.reloadHighScores();
     });
   }; // saveHighScore

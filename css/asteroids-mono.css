@@ -1,0 +1,194 @@
+body {
+  background-color: #000;
+  color: #ddd;
+}
+
+
+a, a:active, a:visited, a:link, a:hover, a:focus {
+  color: #fff;
+}
+
+
+#loading-screen {
+  color: #fff;
+}
+
+#start-screen h1 {
+  color:rgba(255, 255, 255, .66);
+}
+#start-screen h2 {
+  color: rgba(255, 255, 255, .66);
+}
+#start-screen  p {
+  color: rgba(255, 255, 255, .66);
+}
+#start-screen p.intro {
+  color: rgba(255, 255, 255, .66);
+}
+
+#start-screen .press-space-start {
+  color: rgba(255, 255, 255, .66);
+}
+
+#menu-select button {
+  color: rgba(255, 255, 255, .66);
+}
+#menu-select button.current {
+  border-bottom: 2px solid rgba(255, 255, 255, .66);
+}
+
+#menu-screen {
+  color: rgba(255, 255, 255, .85);
+}
+
+#pause-screen div.pause {
+  color: rgba(255, 255, 255, .66);
+}
+
+#instructions-menu h3 {
+  border-bottom: 1px solid rgba(255, 255, 255, .1);
+}
+
+#instructions-menu tr.separator {
+  border-top: 1px solid rgba(255, 255, 255, .1);
+}
+
+#options-menu label:hover {
+  color: rgba(255, 255, 255, .66);
+}
+#options-menu input[type="checkbox"] + label:before {
+  border: 3px solid rgba(255, 255, 255, .66);
+}
+#options-menu input[type="checkbox"]:checked + label:before {
+  border-color: rgba(255, 255, 255, .66);
+  border-top-color: transparent;
+  border-left-color: transparent;
+}
+
+#scores-menu tr:hover {
+  color:#fff;
+  background-color: rgba(0, 0, 0, .66);
+}
+
+
+kbd {
+  border: 1px solid rgba(255, 255, 255, .75);
+  background-color: rgba(0, 0, 0, .33);
+}
+kbd.controls {
+  border-color: rgba(255, 255, 255, .75);
+}
+
+kbd.important {
+  border-color: #fff;
+}
+
+#level-screen .text {
+  color: rgba(255, 255, 255, .66);
+}
+
+#game-info .score, #game-info .lives {
+  color: rgba(255, 255, 255, .75);
+}
+
+#game-info .score {
+  color: rgba(255, 255, 255, .66);
+}
+#game-info .progress-bar {
+  border: 1px solid rgba(255, 255, 255, .33);
+}
+#game-info .progress {
+  text-shadow: 0 0 3px #000, 0 0 1px #000;
+  background-color: #fff;
+}
+
+
+.overlay {
+  background-color: rgba(0, 0, 0, .5);
+}
+
+#win .content h1 {
+  color: #fff;
+}
+#win button {
+  border: 1px solid #fff;
+  background-color: rgba(0, 0, 0, .66);
+  color: #fff;
+}
+
+#game-over .game-over {
+  color: transparent;
+  -webkit-text-stroke-color: rgba(255, 255, 255, 1);
+  text-shadow: 0 0 5vmin rgba(255, 255, 255, .3);
+}
+
+#game-over .text-border {
+  color: #000;
+  text-shadow: 1px 1px 0 #fff, -1px -1px 0 #fff, 1px -1px 0 #fff, -1px  1px 0 #fff, 1px  1px 0 #fff, 0 0 10px #fff;
+}
+
+#game-over .press-space-continue {
+  color: rgba(255, 255, 255, .75);
+}
+
+#hof-input strong {
+  color: rgba(255, 255, 255, .66);
+}
+#hof-input input {
+  color: rgb(255, 255, 255);
+  border-bottom:2px solid #fff;
+  background-color: rgba(0, 0, 0, .66);
+}
+
+#fps.good {
+  color: #fff;
+}
+#fps.medium {
+  color: #fff;
+}
+#fps.bad {
+  color: #fff;
+}
+
+
+.spinner {
+  margin: 60px auto;
+  font-size: 1vmin;
+  position: relative;
+  text-indent: -9999em;
+  border-top: 1.1em solid rgba(255, 255, 255, 0.2);
+  border-right: 1.1em solid rgba(255, 255, 255, 0.2);
+  border-bottom: 1.1em solid rgba(255, 255, 255, 0.2);
+  border-left: 1.1em solid rgba(0, 255, 153, .66);
+  -webkit-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-animation: load8 1.1s infinite linear;
+  animation: load8 1.1s infinite linear;
+}
+.spinner,
+.spinner:after {
+  border-radius: 50%;
+  width: 8vmin;
+  height: 8vmin;
+}
+@-webkit-keyframes load8 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@keyframes load8 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}

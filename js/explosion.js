@@ -108,7 +108,6 @@ var ExplosionBit = function(x, y, heading, minSpeed, maxSpeed, type, radiusMin, 
   this.shrinkSpeed = Math.random() * (.05 - .01) + .01;
   this.radius = utils.getRandomIntInclusive(radiusMin, radiusMax);
 
-console.log('type: ' + type);
   this.color = this.colors[type][this.colorScheme][Math.floor(Math.random() * this.colors[type][this.colorScheme].length)];
   this.speed = utils.getRandomIntInclusive(minSpeed, parseInt(maxSpeed));
   this.heading = utils.getRandomArbitrary(heading - Math.PI / spread, heading + Math.PI / spread);

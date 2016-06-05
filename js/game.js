@@ -83,7 +83,32 @@ var Game = function() {
   };
 
   this.applyColor = function(colorful) {
-    //Asteroid.prototype.colorful = this.colorful;
+
+    this.colorful = colorful;
+    this.updateLivesShips();
+    var monoStylesheet = document.getElementById('mono-stylesheet');
+    //var monoStylesheet = document.styleSheets[1];
+
+    if(!this.colorful) {
+      this.bgCtx.clearRect(0, 0, this.width, this.height);
+      if(!monoStylesheet) {
+        var link = document.createElement('link');
+        link.setAttribute('rel', 'stylesheet');
+        link.setAttribute('href', 'css/asteroids-mono.css');
+        link.setAttribute('media', 'screen');
+        link.setAttribute('type', 'text/css');
+        link.setAttribute('id', 'mono-stylesheet');
+        document.getElementsByTagName('head')[0].appendChild(link);
+      }
+    }
+    else {
+      if(monoStylesheet) {
+        document.getElementById('mono-stylesheet').remove();
+      }
+
+      //monoStylesheet.disabled == 'disabled'
+    }
+
     Asteroid.prototype.colorScheme = (colorful) ? 'colorful' : 'monochrome';
     Ship.prototype.colorScheme = (colorful) ? 'colorful' : 'monochrome';
     EnemyShip.prototype.colorScheme = (colorful) ? 'colorful' : 'monochrome';
@@ -131,7 +156,7 @@ var Game = function() {
     if(this.checkAudioSupport()) {
       this.audioAvailable = true;
       this.sound = new Sound();
-      this.checkAudioInterval = window.setInterval(this.checkAudioReady, 500);
+      this.checkAudioInterval = window.setInterval(this.checkAudioReady, 1000);
     }
     else {
       this.audioAvailable = false;
@@ -182,7 +207,6 @@ var Game = function() {
 
   // This is just an intermediate stage that may be removed at some point
   this.gameReady = function() {
-console.log('gameReady');
     document.getElementById('loading-screen').style.display = 'none';
     self.showStartScreen(); // SELF
   }; // gameReady
@@ -230,8 +254,8 @@ console.log('gameReady');
 
 
   this.reloadHighScores = function() {
-    ajaxGet('/asteroidsLoadHighScores.html', true, function(json) {
-      document.getElementById('scores-menu').innerHTML = json.html;
+    ajaxGet('/asteroidsLoadHighScores.html', true, function(data) {
+      document.getElementById('scores-menu').innerHTML = data.scoresTable;
     });
   }; // reloadHighScores
 
@@ -785,11 +809,11 @@ console.log('gameReady');
         self.uiCtx.lineWidth = 3;
         self.uiCtx.stroke();
 
-        self.uiCtx.strokeStyle = '#864';
+        self.uiCtx.strokeStyle = (self.colorful) ? '#864' : '#666';
         /*self.uiCtx.shadowBlur = 5;*/
         self.uiCtx.stroke();
 
-        self.uiCtx.fillStyle = '#1a1e2a';
+        self.uiCtx.fillStyle = (self.colorful) ? '#1a1e2a': '#1e1e1e';
         self.uiCtx.fill();
         self.uiCtx.restore();
 

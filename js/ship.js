@@ -180,7 +180,7 @@ var Ship = function(params) {
       }
     }
 */
-    this.ctx.fillStyle = this.colors[this.colorScheme].fill;
+    this.ctx.fillStyle = this.colors[this.colorScheme].fill; //
     this.ctx.fill();
 
     this.ctx.restore();
@@ -239,20 +239,7 @@ var Ship = function(params) {
     this.updateShape(0);
   }; // update
 }; // Ship
-Ship.prototype.colors = {
-  colorful: {
-    thrustStroke: 'rgba(0, 50, 255, .45)',
-    thrustFill: 'rgba(255, 200, 200, .33)',
-    stroke: 'rgb(255, 128, 0)',
-    fill: '#542a00'
-  },
-  monochrome: {
-    thrustStroke: 'rgba(255, 255, 255, .45)',
-    thrustFill: 'rgba(255, 255, 255, .33)',
-    stroke: 'rgb(255, 128, 0)',
-    fill: '#542a00'
-  }
-};
+
 
 
 var LaserBlast = function(x, y, heading, colorful) {
@@ -331,7 +318,7 @@ Ship.prototype.colors = {
     thrustStroke: 'rgba(255, 255, 255, .45)',
     thrustFill: 'rgba(255, 255, 255, .33)',
     stroke: 'rgb(255, 255, 255)',
-    fill: '#444',
+    fill: '#000',
     laser: 'rgba(255, 255, 255, '
   }
 };
