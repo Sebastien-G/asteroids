@@ -101,7 +101,6 @@
     renderLoop();
 
 
-
     var windowResizeHandler = function() {
       setCanvasFullSize();
     } // windowResizeHandler
@@ -115,4 +114,4 @@
   } // DOMLoaded
 
   window.addEventListener('DOMContentLoaded', DOMLoaded);
-}());
+}()); // IIFE

@@ -106,7 +106,7 @@ var Ship = function(params) {
   };
 
   this.alphaToggle = true;
-  this.draw = function(ctx, thrusting) {
+  this.draw = function(thrusting) {
     var alpha = 1;
 
     if(this.invulnerable) {
@@ -125,71 +125,73 @@ var Ship = function(params) {
     }
 
     if(thrusting) {
-      ctx.save();
-      ctx.globalAlpha = alpha;
-      ctx.translate(this.shape.points[3].x, this.shape.points[3].y);
-      ctx.rotate(this.angle + Math.PI * .5);
+      this.ctx.save();
+      this.ctx.globalAlpha = alpha;
+      this.ctx.translate(this.shape.points[3].x, this.shape.points[3].y);
+      this.ctx.rotate(this.angle + Math.PI * .5);
 
       var max = utils.getRandomIntInclusive(15, 22);
-      ctx.beginPath();
-      ctx.moveTo(0, max);
-      ctx.lineTo(-8, 0);
-      ctx.lineTo(8, 0);
-      ctx.closePath();
+      this.ctx.beginPath();
+      this.ctx.moveTo(0, max);
+      this.ctx.lineTo(-8, 0);
+      this.ctx.lineTo(8, 0);
+      this.ctx.closePath();
 
-      ctx.lineJoin = 'round';
-      ctx.lineWidth = 1;
-      ctx.strokeStyle = (this.colorful) ? 'rgba(255, 200, 0, .45)' : 'rgba(255, 255, 255, .45)';
-      ctx.stroke();
+      this.ctx.lineJoin = 'round';
+      this.ctx.lineWidth = 1;
+      //this.ctx.strokeStyle = (this.colorful) ? 'rgba(255, 200, 0, .45)' : 'rgba(255, 255, 255, .45)';
+      this.ctx.strokeStyle = this.colors[this.colorScheme].thrustStroke;
+      this.ctx.stroke();
 
-      ctx.fillStyle = (this.colorful) ? 'rgba(255, 120, 0, .33)' : 'rgba(255, 255, 255, .33)';
-      ctx.fill();
-      ctx.restore();
+      //this.ctx.fillStyle = (this.colorful) ? 'rgba(255, 120, 0, .33)' : 'rgba(255, 255, 255, .33)';
+      this.ctx.fillStyle = this.colors[this.colorScheme].thrustFill;
+      this.ctx.fill();
+      this.ctx.restore();
     }
 
-    ctx.save();
-    ctx.beginPath();
-    ctx.globalAlpha = alpha;
+    this.ctx.save();
+    this.ctx.beginPath();
+    this.ctx.globalAlpha = alpha;
 
-    ctx.moveTo(this.shape.points[0].x, this.shape.points[0].y);
+    this.ctx.moveTo(this.shape.points[0].x, this.shape.points[0].y);
     for(var j = 1; j < this.shape.points.length; j++) {
-      ctx.lineTo(this.shape.points[j].x, this.shape.points[j].y);
+      this.ctx.lineTo(this.shape.points[j].x, this.shape.points[j].y);
     }
 
-    ctx.lineJoin = 'round';
+    this.ctx.lineJoin = 'round';
 
-    ctx.closePath();
-    ctx.strokeStyle = (this.colorful) ? 'rgb(255, 128, 0)' : '#fff';
-    ctx.lineWidth = 3;
-    ctx.stroke();
-
+    this.ctx.closePath();
+    this.ctx.strokeStyle = this.colors[this.colorScheme].stroke;
+    this.ctx.lineWidth = 3;
+    this.ctx.stroke();
+/*
     if(this.hq) {
-      ctx.shadowColor = 'rgba(255, 128, 0, .75)';
-      ctx.shadowBlur = 5;
-      ctx.stroke();
+      this.ctx.shadowColor = 'rgba(255, 128, 0, .75)';
+      this.ctx.shadowBlur = 5;
+      this.ctx.stroke();
 
-      ctx.strokeStyle = '#a44';
-      ctx.stroke();
+      this.ctx.strokeStyle = '#a44';
+      this.ctx.stroke();
 
       if(thrusting) {
-        ctx.strokeStyle = '#a44';
-        ctx.shadowBlur = 7;
-        ctx.stroke();
+        this.ctx.strokeStyle = '#a44';
+        this.ctx.shadowBlur = 7;
+        this.ctx.stroke();
       }
     }
+*/
+    this.ctx.fillStyle = this.colors[this.colorScheme].fill;
+    this.ctx.fill();
 
-    ctx.fillStyle = '#542a00';
-    ctx.fill();
-
-    ctx.restore();
+    this.ctx.restore();
   }; // draw
 
 
-  this.drawLasers = function(ctx, colorful, width, height) {
+  this.drawLasers = function(width, height) {
     for (var i = this.laserBlasts.length - 1; i >= 0; i--) {
       var laserBlast = this.laserBlasts[i];
       if(!laserBlast.wasted) {
-        ctx.save();
+        this.ctx.save();
 
         var endX = laserBlast.x + (laserBlast.length + 20) * Math.cos(laserBlast.heading);
         var endY = laserBlast.y + (laserBlast.length + 20) * Math.sin(laserBlast.heading);
@@ -197,15 +199,15 @@ var Ship = function(params) {
         var startX = laserBlast.x + 20 * Math.cos(laserBlast.heading);
         var startY = laserBlast.y + 20 * Math.sin(laserBlast.heading);
 
-        ctx.beginPath();
-        ctx.moveTo(endX, endY);
-        ctx.lineTo(startX, startY);
+        this.ctx.beginPath();
+        this.ctx.moveTo(endX, endY);
+        this.ctx.lineTo(startX, startY);
 
-        ctx.lineCap = 'round';
-        ctx.lineWidth = laserBlast.width;
-        ctx.strokeStyle = laserBlast.color + laserBlast.alpha;
-        ctx.stroke();
-        ctx.restore();
+        this.ctx.lineCap = 'round';
+        this.ctx.lineWidth = laserBlast.width;
+        this.ctx.strokeStyle = this.colors[this.colorScheme].laser + laserBlast.alpha;
+        this.ctx.stroke();
+        this.ctx.restore();
 
         laserBlast.update(width, height);
       }
@@ -237,6 +239,20 @@ var Ship = function(params) {
     this.updateShape(0);
   }; // update
 }; // Ship
+Ship.prototype.colors = {
+  colorful: {
+    thrustStroke: 'rgba(0, 50, 255, .45)',
+    thrustFill: 'rgba(255, 200, 200, .33)',
+    stroke: 'rgb(255, 128, 0)',
+    fill: '#542a00'
+  },
+  monochrome: {
+    thrustStroke: 'rgba(255, 255, 255, .45)',
+    thrustFill: 'rgba(255, 255, 255, .33)',
+    stroke: 'rgb(255, 128, 0)',
+    fill: '#542a00'
+  }
+};
 
 
 var LaserBlast = function(x, y, heading, colorful) {
@@ -252,7 +268,7 @@ var LaserBlast = function(x, y, heading, colorful) {
   this.length = 5;
   this.width = 4;
   this.alpha = '.75)';
-  this.color = (colorful) ? 'rgba(64, 128, 255, ' : 'rgba(255, 255, 255, ';
+  //this.color = (colorful) ? 'rgba(64, 128, 255, ' : 'rgba(255, 255, 255, ';
   this.speed = 10;
   this.heading = heading;
   this.vx = Math.cos(this.heading) * this.speed;
@@ -301,11 +317,24 @@ var LaserBlast = function(x, y, heading, colorful) {
         this.alpha = '0.1)';
       }
     }
-
-
   }; // update
 }; // LaserBlast
-
+Ship.prototype.colors = {
+  colorful: {
+    thrustStroke: 'rgba(0, 50, 255, .45)',
+    thrustFill: 'rgba(255, 200, 200, .33)',
+    stroke: 'rgb(255, 128, 0)',
+    fill: '#542a00',
+    laser: 'rgba(64, 128, 255, '
+  },
+  monochrome: {
+    thrustStroke: 'rgba(255, 255, 255, .45)',
+    thrustFill: 'rgba(255, 255, 255, .33)',
+    stroke: 'rgb(255, 255, 255)',
+    fill: '#444',
+    laser: 'rgba(255, 255, 255, '
+  }
+};
 
 
 
@@ -458,80 +487,80 @@ var EnemyShip = function(params) {
   }; //setHeading
 
 
-  this.draw = function(ctx, colorful, thrusting) {
+  this.draw = function() {
 
-    ctx.save();
+    this.ctx.save();
 
-    ctx.beginPath();
-    ctx.moveTo(this.shape.points[0].x, this.shape.points[0].y);
+    this.ctx.beginPath();
+    this.ctx.moveTo(this.shape.points[0].x, this.shape.points[0].y);
     for(var j = 1; j < this.shape.points.length; j++) {
-      ctx.lineTo(this.shape.points[j].x, this.shape.points[j].y);
+      this.ctx.lineTo(this.shape.points[j].x, this.shape.points[j].y);
     }
-    ctx.lineJoin = 'round';
-    ctx.closePath();
+    this.ctx.lineJoin = 'round';
+    this.ctx.closePath();
 
-    ctx.fillStyle = '#101628';
-    ctx.fill();
+    this.ctx.fillStyle = this.colors[this.colorScheme].fill;
+    this.ctx.fill();
 
-    ctx.strokeStyle = (colorful) ? 'rgb(96, 112, 128)' : '#efefef';
-    ctx.lineWidth = 1;
-    ctx.stroke();
+    this.ctx.strokeStyle = this.colors[this.colorScheme].stroke;
+    this.ctx.lineWidth = 1;
+    this.ctx.stroke();
 
-    ctx.restore();
+    this.ctx.restore();
   }; // draw
 
 
-  this.drawPhotonTorpedos = function(ctx, colorful, width, height) {
+  this.drawPhotonTorpedos = function(width, height) {
     for (var i = this.photonTorpedos.length - 1; i >= 0; i--) {
       var photonTorpedo = this.photonTorpedos[i];
       if(!photonTorpedo.wasted) {
-        ctx.save();
+        this.ctx.save();
 
-        ctx.save();
-        ctx.translate(photonTorpedo.x, photonTorpedo.y);
+        this.ctx.save();
+        this.ctx.translate(photonTorpedo.x, photonTorpedo.y);
 
-        ctx.lineCap = 'round';
-        ctx.lineWidth = photonTorpedo.width;
+        this.ctx.lineCap = 'round';
+        this.ctx.lineWidth = photonTorpedo.width;
 
-        ctx.beginPath();
-        ctx.rotate(photonTorpedo.rotation);
-        ctx.moveTo(photonTorpedo.radius, 0);
-        ctx.lineTo(-photonTorpedo.radius, 0);
-        ctx.moveTo(0, photonTorpedo.radius);
-        ctx.lineTo(0, -photonTorpedo.radius);
-        ctx.strokeStyle = photonTorpedo.color + photonTorpedo.alpha;
-        ctx.stroke();
+        this.ctx.beginPath();
+        this.ctx.rotate(photonTorpedo.rotation);
+        this.ctx.moveTo(photonTorpedo.radius, 0);
+        this.ctx.lineTo(-photonTorpedo.radius, 0);
+        this.ctx.moveTo(0, photonTorpedo.radius);
+        this.ctx.lineTo(0, -photonTorpedo.radius);
+        this.ctx.strokeStyle = this.colors[this.colorScheme].torpedo1 + photonTorpedo.alpha;
+        this.ctx.stroke();
 
-        ctx.rotate(Math.PI * .125 * photonTorpedo.rotation);
-        ctx.beginPath();
-        ctx.moveTo(photonTorpedo.radius, 0);
-        ctx.lineTo(-photonTorpedo.radius, 0);
-        ctx.moveTo(0, photonTorpedo.radius);
-        ctx.lineTo(0, -photonTorpedo.radius);
-        ctx.strokeStyle = 'rgba(255, 128, 0,' + photonTorpedo.alpha;
-        ctx.stroke();
+        this.ctx.rotate(Math.PI * .125 * photonTorpedo.rotation);
+        this.ctx.beginPath();
+        this.ctx.moveTo(photonTorpedo.radius, 0);
+        this.ctx.lineTo(-photonTorpedo.radius, 0);
+        this.ctx.moveTo(0, photonTorpedo.radius);
+        this.ctx.lineTo(0, -photonTorpedo.radius);
+        this.ctx.strokeStyle = this.colors[this.colorScheme].torpedo2 + photonTorpedo.alpha;
+        this.ctx.stroke();
 
-        ctx.rotate(Math.PI * .25 * photonTorpedo.rotation);
-        ctx.beginPath();
-        ctx.moveTo(photonTorpedo.radius, 0);
-        ctx.lineTo(-photonTorpedo.radius, 0);
-        ctx.moveTo(0, photonTorpedo.radius);
-        ctx.lineTo(0, -photonTorpedo.radius);
-        ctx.strokeStyle = photonTorpedo.color + photonTorpedo.alpha;
-        ctx.stroke();
+        this.ctx.rotate(Math.PI * .25 * photonTorpedo.rotation);
+        this.ctx.beginPath();
+        this.ctx.moveTo(photonTorpedo.radius, 0);
+        this.ctx.lineTo(-photonTorpedo.radius, 0);
+        this.ctx.moveTo(0, photonTorpedo.radius);
+        this.ctx.lineTo(0, -photonTorpedo.radius);
+        this.ctx.strokeStyle = this.colors[this.colorScheme].torpedo1 + photonTorpedo.alpha;
+        this.ctx.stroke();
 
-        ctx.rotate(Math.PI * .375 * photonTorpedo.rotation);
-        ctx.beginPath();
-        ctx.moveTo(photonTorpedo.radius, 0);
-        ctx.lineTo(-photonTorpedo.radius, 0);
-        ctx.moveTo(0, photonTorpedo.radius);
-        ctx.lineTo(0, -photonTorpedo.radius);
-        ctx.strokeStyle = 'rgba(255, 128, 0,' + photonTorpedo.alpha;
-        ctx.stroke();
+        this.ctx.rotate(Math.PI * .375 * photonTorpedo.rotation);
+        this.ctx.beginPath();
+        this.ctx.moveTo(photonTorpedo.radius, 0);
+        this.ctx.lineTo(-photonTorpedo.radius, 0);
+        this.ctx.moveTo(0, photonTorpedo.radius);
+        this.ctx.lineTo(0, -photonTorpedo.radius);
+        this.ctx.strokeStyle = this.colors[this.colorScheme].torpedo2 + photonTorpedo.alpha;
+        this.ctx.stroke();
 
         photonTorpedo.rotation += Math.PI / 8;
 
-        ctx.restore();
+        this.ctx.restore();
 
         photonTorpedo.update(width, height);
       }
@@ -589,4 +618,18 @@ var EnemyShip = function(params) {
 
     this.updateShape(0);
   }; // update
+};
+EnemyShip.prototype.colors = {
+  colorful: {
+    stroke: 'rgb(96, 112, 128)',
+    fill: '#101628',
+    torpedo1: 'rgba(255, 128, 0,',
+    torpedo2: 'rgba(255, 0, 0,'
+  },
+  monochrome: {
+    stroke: 'rgb(255, 255, 255)',
+    fill: '#333',
+    torpedo1: 'rgba(192, 192, 192,',
+    torpedo2: 'rgba(255, 255, 255,'
+  }
 };

@@ -37,9 +37,6 @@ var Asteroid = function(params) {
   this.vy = Math.sin(direction) * speed; // y velocity
   this.destroyed = false;
 
-  this.hexColor = '#0f9';
-  this.rgbaColor = 'rgba(0, 255, 128, .75)';
-
   var shape1 = {
     x: this.x,
     y: this.y,
@@ -225,43 +222,40 @@ var Asteroid = function(params) {
     this.vy = Math.sin(heading) * speed;
   }; //setHeading
 
-  this.draw = function(ctx, colorful) {
+  this.draw = function() {
     if(this.destroyed == false) {
-      ctx.save();
-      ctx.beginPath();
+      this.ctx.save();
+      this.ctx.beginPath();
 
-      ctx.moveTo(this.shape.points[0].x, this.shape.points[0].y);
+      this.ctx.moveTo(this.shape.points[0].x, this.shape.points[0].y);
       for(var j = 1; j < this.shape.points.length; j++) {
-        ctx.lineTo(this.shape.points[j].x, this.shape.points[j].y);
+        this.ctx.lineTo(this.shape.points[j].x, this.shape.points[j].y);
       }
 
-      var asteroidColorHex = colorful ? this.hexColor : '#fff'; //
-      var asteroidColorRGBA = colorful ? this.rgbaColor : 'rgba(255, 255, 255, .75)'; // rgba(0, 255, 128, .75)
-
-      ctx.strokeStyle = asteroidColorHex;
-      ctx.closePath();
-      ctx.stroke();
-
-      ctx.strokeStyle = asteroidColorHex;
-      ctx.shadowBlur = 5;
-      ctx.stroke();
-
+      this.ctx.strokeStyle = this.colors[this.colorScheme].asteroidColorHex;
+      this.ctx.lineWidth = 1;
+      this.ctx.closePath();
+      this.ctx.stroke();
 
       if(this.hq) {
-        ctx.shadowBlur = 11;
-        ctx.shadowColor = asteroidColorRGBA;
-        ctx.stroke();
+        this.ctx.strokeStyle = this.colors[this.colorScheme].asteroidColorRGBA;
+        this.ctx.shadowBlur = 5;
+        this.ctx.stroke();
 
-        ctx.shadowBlur = 7;
-        ctx.shadowColor = asteroidColorRGBA;
-        ctx.stroke();
+        this.ctx.shadowBlur = 11;
+        this.ctx.shadowColor = this.colors[this.colorScheme].asteroidColorRGBA;
+        this.ctx.stroke();
 
-        ctx.shadowBlur = 3;
-        ctx.shadowColor = asteroidColorRGBA;
-        ctx.stroke();
+        this.ctx.shadowBlur = 7;
+        this.ctx.shadowColor = this.colors[this.colorScheme].asteroidColorRGBA;
+        this.ctx.stroke();
+
+        this.ctx.shadowBlur = 3;
+        this.ctx.shadowColor = this.colors[this.colorScheme].asteroidColorRGBA;
+        this.ctx.stroke();
       }
 
-      ctx.restore();
+      this.ctx.restore();
     } //
   }
 
@@ -298,3 +292,16 @@ var Asteroid = function(params) {
 	  } // for
   }; // update
 }; // Asteroid
+
+Asteroid.prototype.colors = {
+  colorful: {
+    asteroidColorHex: '#0f9',
+    asteroidColorRGBA: 'rgba(0, 255, 128, .75)'
+  },
+  monochrome: {
+    asteroidColorHex: '#fff',
+    asteroidColorRGBA: 'rgba(255, 255, 255, .75)'
+  }
+};
+
+Asteroid.prototype.colorScheme = 'colorful';

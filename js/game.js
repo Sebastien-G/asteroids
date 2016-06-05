@@ -56,7 +56,7 @@ var Game = function() {
   this.getLevels = function() {
     return [{
       nbAsteroids: 4,
-      nbEnemyShips: 0,
+      nbEnemyShips: 1,
       enemyShipSpawnDelay: 10000,
       bonuses: {
         size1: ['HTML5', 'CSS3'],
@@ -82,6 +82,16 @@ var Game = function() {
     }];
   };
 
+  this.applyColor = function(colorful) {
+    //Asteroid.prototype.colorful = this.colorful;
+    Asteroid.prototype.colorScheme = (colorful) ? 'colorful' : 'monochrome';
+    Ship.prototype.colorScheme = (colorful) ? 'colorful' : 'monochrome';
+    EnemyShip.prototype.colorScheme = (colorful) ? 'colorful' : 'monochrome';
+    Bonus.prototype.colorScheme = (colorful) ? 'colorful' : 'monochrome';
+    BonusFlash.prototype.colorScheme = (colorful) ? 'colorful' : 'monochrome';
+    BonusLabel.prototype.colorScheme = (colorful) ? 'colorful' : 'monochrome';
+    ExplosionBit.prototype.colorScheme = (colorful) ? 'colorful' : 'monochrome';
+  }; // applyColor
 
   // Check mp3 audio support
   // http://diveintohtml5.info/everything.html
@@ -95,6 +105,17 @@ var Game = function() {
   // A beginning is the time for taking the most delicate care that the balances are correct.
   this.init = function() {
     this.setCanvasFullSize();
+
+    Asteroid.prototype.ctx = this.ctx;
+    Ship.prototype.ctx = this.ctx;
+    EnemyShip.prototype.ctx = this.ctx;
+    Bonus.prototype.ctx = this.ctx;
+    BonusFlash.prototype.ctx = this.ctx;
+    BonusLabel.prototype.ctx = this.ctx;
+    AsteroidExplosion.prototype.ctx = this.ctx;
+    ShipExplosion.prototype.ctx = this.ctx;
+
+    this.applyColor(this.colorful);
 
     this.levels = this.getLevels();
 
@@ -121,16 +142,16 @@ var Game = function() {
     //setTimeout(this.gameReady, 1200);
   }; // init
 
-
+  // Audio preload is too buggy, remove for now...
   this.checkAudioReady = function() {
-    if (self.sound.gameMusic.readyState === 4 &&
-        self.sound.laser.pool[0].readyState === 4 &&
-        self.sound.bonusPickup.pool[0].readyState === 4 &&
-        self.sound.shipExplosion.pool[0].readyState === 4 &&
-        self.sound.asteroidExplosion.pool[0].readyState === 4) {
+    // if (self.sound.gameMusic.readyState === 4 &&
+    //     self.sound.laser.pool[0].readyState === 4 &&
+    //     self.sound.bonusPickup.pool[0].readyState === 4 &&
+    //     self.sound.shipExplosion.pool[0].readyState === 4 &&
+    //     self.sound.asteroidExplosion.pool[0].readyState === 4) {
       window.clearInterval(self.checkAudioInterval);
       self.gameReady();
-    }
+    // }
   }; // checkAudioReady
 
 
@@ -161,6 +182,7 @@ var Game = function() {
 
   // This is just an intermediate stage that may be removed at some point
   this.gameReady = function() {
+console.log('gameReady');
     document.getElementById('loading-screen').style.display = 'none';
     self.showStartScreen(); // SELF
   }; // gameReady
@@ -286,6 +308,7 @@ var Game = function() {
           bonus: bonus[0],
           angle: Math.random() * Math.PI * 2
         });
+
         self.asteroids.push(asteroid);
       }
 
@@ -372,7 +395,7 @@ var Game = function() {
           window.setTimeout(function() {
             document.querySelector('#game-over .press-space-continue').style.display = 'block';
             window.addEventListener('keydown', self.pressSpaceContinue);
-          }, 3000);
+          }, 2000);
         }
       });
     }, 1000);
@@ -381,6 +404,7 @@ var Game = function() {
 
   this.pressSpaceContinue = function(event) {
     if(event.keyCode == 32) {
+      event.preventDefault();
       window.removeEventListener('keydown', self.pressSpaceContinue);
       self.resetGame();
       self.showStartScreen();
@@ -756,16 +780,16 @@ var Game = function() {
         self.uiCtx.closePath();
         self.uiCtx.strokeStyle = 'rgba(255, 255, 255, .9)';
 
-        self.uiCtx.shadowColor = 'rgba(255, 255, 255, .5)';
-        self.uiCtx.shadowBlur = 10;
+        /*self.uiCtx.shadowColor = 'rgba(255, 255, 255, .5)';
+        self.uiCtx.shadowBlur = 10;*/
         self.uiCtx.lineWidth = 3;
         self.uiCtx.stroke();
 
         self.uiCtx.strokeStyle = '#864';
-        self.uiCtx.shadowBlur = 5;
+        /*self.uiCtx.shadowBlur = 5;*/
         self.uiCtx.stroke();
 
-        self.uiCtx.fillStyle = '#333';
+        self.uiCtx.fillStyle = '#1a1e2a';
         self.uiCtx.fill();
         self.uiCtx.restore();
 

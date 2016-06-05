@@ -47,7 +47,7 @@ var DOMLoaded = function() {
 
         for (var i = game.asteroids.length - 1; i >= 0 ; i--) {
           game.asteroids[i].update(game.width, game.height);
-          game.asteroids[i].draw(game.ctx, game.colorful);
+          game.asteroids[i].draw();
         }
       }
 
@@ -55,7 +55,7 @@ var DOMLoaded = function() {
         game.checkShipBonusCollision();
         for (var i = game.bonuses.length - 1; i >= 0; i--) {
           game.bonuses[i].update(game.width, game.height);
-          game.bonuses[i].draw(game.ctx, game.colorful, game.rafTimer);
+          game.bonuses[i].draw(game.rafTimer);
         }
       }
 
@@ -67,7 +67,7 @@ var DOMLoaded = function() {
           }
 
           game.bonusLabels[i].update(game.width, game.height);
-          game.bonusLabels[i].draw(game.ctx, game.colorful);
+          game.bonusLabels[i].draw();
         }
       }
 
@@ -80,7 +80,7 @@ var DOMLoaded = function() {
           }
 
           game.bonusFlashes[i].update(game.width, game.height);
-          game.bonusFlashes[i].draw(game.ctx, game.colorful);
+          game.bonusFlashes[i].draw();
 
         }
       }
@@ -91,10 +91,10 @@ var DOMLoaded = function() {
         for (var i = game.enemyShips.length - 1; i >= 0; i--) {
           game.enemyShips[i].update(game.width, game.height, game.ship);
           if(game.enemyShips[i].photonTorpedos.length) {
-            game.enemyShips[i].drawPhotonTorpedos(game.ctx, game.colorful, game.width, game.height);
+            game.enemyShips[i].drawPhotonTorpedos(game.width, game.height);
           } // if(enemyShips[i].photonTorpedos.length)
 
-          game.enemyShips[i].draw(game.ctx, game.colorful);
+          game.enemyShips[i].draw();
         }
       }
 
@@ -114,7 +114,7 @@ var DOMLoaded = function() {
         }
 
         game.ship.update(game.width, game.height);
-        game.ship.draw(game.ctx, game.thrusting);
+        game.ship.draw(game.thrusting);
 
         if(game.firing) {
           if(game.ship.lastFire === null || (new Date().getTime() - game.ship.lastFire >= 150) ) {
@@ -129,12 +129,12 @@ var DOMLoaded = function() {
         } // if(firing)
 
         if(game.ship.laserBlasts.length) {
-          game.ship.drawLasers(game.ctx, game.colorful, game.width, game.height);
+          game.ship.drawLasers(game.width, game.height);
         } // if(ship.laserBlasts.length)
       } // if(ship.alive)
 
       if(game.shipExplosion) {
-        game.shipExplosion.draw(game.ctx, game.colorful);
+        game.shipExplosion.draw();
 
         if(game.shipExplosion.bits.length <= 0) {
           game.shipExplosion = null;
@@ -170,18 +170,22 @@ var DOMLoaded = function() {
       switch(event.keyCode) {
         case 32: // space
           game.firing = true;
+          event.preventDefault();
           break;
 
         case 38: // up
           game.thrusting = true;
+          event.preventDefault();
           break;
 
         case 37: // left
           game.turningLeft = true;
+          event.preventDefault();
           break;
 
         case 39: // right
           game.turningRight = true;
+          event.preventDefault();
           break;
       } // switch
     } // if(stage == 'gameOn')
@@ -189,6 +193,7 @@ var DOMLoaded = function() {
       if(game.stage == 'startScreen') {
         if(event.keyCode == 32) {
           game.startGame();
+          event.preventDefault();
         }
       }
     }
@@ -196,29 +201,35 @@ var DOMLoaded = function() {
 
 
   window.addEventListener('keyup', function(event) {
+    event.preventDefault();
     if(game.stage == 'gameOn') {
       switch(event.keyCode) {
         case 27: // Escape
           game.paused = !game.paused;
           game.setPaused();
+          event.preventDefault();
           break;
 
         case 32: // space
           game.firing = false;
           game.paused = false;
           game.setPaused();
+          event.preventDefault();
           break;
 
         case 38: // up
           game.thrusting = false;
+          event.preventDefault();
           break;
 
         case 37: // left
           game.turningLeft = false;
+          event.preventDefault();
           break;
 
         case 39: // right
           game.turningRight = false;
+          event.preventDefault();
           break;
       } // switch
     } // if(stage == 'gameOn')
@@ -301,6 +312,7 @@ var DOMLoaded = function() {
     document.getElementById('optionDebug').checked = game.debugMode;
     document.getElementById('optionMusic').checked = game.musicOn;
     document.getElementById('optionSoundEffects').checked = game.soundEffectsOn;
+    document.getElementById('optionColorful').checked = !game.colorful;
 
     if(!game.audioAvailable) {
       document.getElementById('optionMusic').parentNode.remove();
@@ -311,10 +323,6 @@ var DOMLoaded = function() {
 
 
   /* Start: options menu */
-  /*document.getElementById('optionColorful').addEventListener('change', function() {
-    colorful = document.getElementById('optionColorful').checked;
-  });*/
-
   document.getElementById('optionDebug').addEventListener('change', function(event) {
     var fpsDisplayElm = document.getElementById('fps');
     //var debugCheckBox = document.getElementById('optionDebug');
@@ -334,6 +342,11 @@ var DOMLoaded = function() {
       game.soundEffectsOn = (this.checked) ? true : false;
     }
   });
+
+  document.getElementById('optionColorful').addEventListener('change', function() {
+    var monochrome = document.getElementById('optionColorful').checked;
+    game.applyColor(!monochrome);
+  });
   /* End: options menu */
 
 
@@ -352,6 +365,7 @@ var DOMLoaded = function() {
 
     var score = document.getElementById('hs-score').value;
     var name = document.getElementById('hs-name').value;
+    document.getElementById('hs-name').value = '';
     document.getElementById('hof-input').style.display = 'none';
 
     if(game.stage == 'gameOver') {

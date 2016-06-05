@@ -31,3 +31,29 @@ Math.sign = Math.sign || function(x) {
 /*
 End: Math.sign
 */
+
+
+/*
+String.prototype.trim
+*/
+if(typeof String.prototype.trim !== 'function') {
+  String.prototype.trim = function() {
+    return this.replace(/^\s+|\s+$/g, '');
+  }
+}
+/*
+End: String.prototype.trim
+*/
+
+
+/*
+Array.isArray
+*/
+if(typeof Array.isArray !== 'function') {
+  Array.isArray = function(value) {
+    return Array.prototype.toString.apply(value) === '[object Array]';
+  };
+}
+/*
+End: String.prototype.trim
+*/

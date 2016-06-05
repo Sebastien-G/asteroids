@@ -5,7 +5,7 @@
     <title>Asteroids - sebastienguillon.net</title>
     <link rel="stylesheet" href="css/asteroids.css" media="screen">
 
-    <script type="text/javascript" src="js/moz-optimized-resize.js" charset="utf-8"></script>
+    <!-- <script type="text/javascript" src="js/moz-optimized-resize.js" charset="utf-8"></script> -->
     <script type="text/javascript" src="js/polyfills.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/utils.js" charset="utf-8"></script>
     <script type="text/javascript" src="js/ajax.js" charset="utf-8"></script>
@@ -45,7 +45,7 @@
         <p><small>Vous pouvez aussi <a href="cv.html">consulter mon CV</a> directement.</small></p>
 
         <p class="press-space-start blink">
-          Appuyez sur Espace pour commencer
+          Appuyez&nbsp;sur&nbsp;Espace&nbsp;pour&nbsp;commencer
         </p><!-- .click-to-start -->
       </div><!-- #start-screen -->
 
@@ -97,11 +97,6 @@
         </div><!-- #instructions-menu -->
 
         <div id="options-menu" class="menu">
-<!--          <div>
-            <label for="optionColorful">Couleurs</label>
-            <input type="checkbox" id="optionColorful" name="optionColorful" value="1" checked="checked">
-          </div>-->
-
           <ul>
             <li>
               <input type="checkbox" id="optionDebug" name="optionDebug" value="1">
@@ -114,6 +109,10 @@
             <li>
               <input type="checkbox" id="optionSoundEffects" name="optionSoundEffects" value="1" checked="checked">
               <label for="optionSoundEffects">Activer les effets sonores</label>
+            </li>
+            <li>
+              <input type="checkbox" id="optionColorful" name="optionColorful" value="1">
+              <label for="optionColorful">Monochrome</label>
             </li>
           </ul>
 
